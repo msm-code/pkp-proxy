@@ -1,0 +1,6 @@
+venv/
+token.json
+credentials.json
+__pycache__
+config.json
+*.swp
