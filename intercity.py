@@ -18,9 +18,9 @@ class Ticket:
 
 
 def get_raw_tickets_html(username, password):
-    UA = "plsnoban"
+    UA = "Mozilla/5.0 (X11; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0"
     session = Session()
-    r = session.get("https://bilet.intercity.pl/logowanie.jsp", headers={"User-Agent": UA})
+    session.get("https://bilet.intercity.pl/", headers={"User-Agent": UA})
     r = session.post("https://bilet.intercity.pl/logowanie.jsp", data={
         "ref": "30",
         "login": username,
@@ -28,6 +28,8 @@ def get_raw_tickets_html(username, password):
         "actlogin": "Zaloguj+si%EA",
     }, headers={
         "User-Agent": UA,
+        "Header": "https://bilet.intercity.pl",
+        "Referer": "https://bilet.intercity.pl/logowanie.jsp",
     })
     return r.text
 
