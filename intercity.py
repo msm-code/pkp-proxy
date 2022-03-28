@@ -13,19 +13,22 @@ class Ticket:
 
     @property
     def eventid(self):
-        return f"TRAIN_{self.starttime}_{self.endtime}".encode().hex()
+        return f"TRAIN_{self.ticket_id}".encode().hex()
 
 
 
 def get_raw_tickets_html(username, password):
+    UA = "plsnoban"
     session = Session()
-    session.post("https://bilet.intercity.pl/", headers={"User-Agent": "plsnoban"})
+    r = session.get("https://bilet.intercity.pl/logowanie.jsp", headers={"User-Agent": UA})
     r = session.post("https://bilet.intercity.pl/logowanie.jsp", data={
         "ref": "30",
         "login": username,
         "password": password,
         "actlogin": "Zaloguj+si%EA",
-    }, headers={"User-Agent": "plsnoban"})
+    }, headers={
+        "User-Agent": UA,
+    })
     return r.text
 
 

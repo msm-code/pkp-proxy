@@ -2,15 +2,17 @@ from __future__ import print_function
 import datetime
 import os.path
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from google.oauth2 import service_account
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
-def make_service():
+def make_service_oauth():
     """Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
     """
@@ -35,8 +37,22 @@ def make_service():
     return build('calendar', 'v3', credentials=creds)
 
 
+def make_service_serviceaccount():
+    """Shows basic usage of the Google Calendar API.
+    Prints the start and name of the next 10 events on the user's calendar.
+    """
+    sa_file = 'credentials.json'
+    creds = service_account.Credentials.from_service_account_file(sa_file, scopes=SCOPES)
+
+    return build('calendar', 'v3', credentials=creds)
+
+
 def train_added(service, train):
-    return service.events().get(calendarId='primary', eventId=train.eventid).execute() is not None
+    try:
+        return service.events().get(calendarId='msm2e4d534d@gmail.com', eventId=train.eventid).execute() is not None
+    except HttpError as e:
+        # 404 not found, new train
+        return False
 
 
 def add_train(service, ticket):
@@ -56,10 +72,6 @@ def add_train(service, ticket):
     }
     print(event)
 
-    event = service.events().insert(calendarId='primary', body=event).execute()
+    event = service.events().insert(calendarId='msm2e4d534d@gmail.com', body=event).execute()
+    print(event)
     print('Event created: %s' % (event.get('htmlLink')))
-
-
-
-if __name__ == '__main__':
-    main()
