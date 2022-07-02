@@ -72,6 +72,9 @@ def add_train(service, ticket):
     }
     print(event)
 
+    # TODO add a pdf attachement
+    # https://bilet.intercity.pl/BiletPDF?bilet=135097xxx
+
     event = service.events().insert(calendarId='msm2e4d534d@gmail.com', body=event).execute()
     print(event)
     print('Event created: %s' % (event.get('htmlLink')))

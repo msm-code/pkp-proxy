@@ -37,7 +37,7 @@ def get_raw_tickets_html(username, password):
 def parse_tickets(html):
     doc = pq(html)
     result = []
-    for elm in doc(".orange.table_div_row"):
+    for elm in doc(".black.table_div_row"):
         e = pq(elm)
         ticket_id = e(".first.table_div_cell a").text()
         relation = e(".table_div_cell_relacja").text()
